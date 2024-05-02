@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "AreYouLostGameMode.h"
-#include "AreYouLostCharacter.h"
+#include "Actors/Pawns/AreYouLostCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 AAreYouLostGameMode::AAreYouLostGameMode()

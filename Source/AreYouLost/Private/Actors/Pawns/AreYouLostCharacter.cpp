@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "AreYouLostCharacter.h"
-#include "AreYouLostProjectile.h"
+#include "Actors/Pawns/AreYouLostCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
