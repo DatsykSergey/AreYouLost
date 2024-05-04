@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
+#include "Components/InteractionComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -35,9 +36,9 @@ AAreYouLostCharacter::AAreYouLostCharacter()
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
-	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(FName("Interaction"));
 }
 
 void AAreYouLostCharacter::BeginPlay()
@@ -72,6 +73,9 @@ void AAreYouLostCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAreYouLostCharacter::Look);
+
+		//Use
+		EnhancedInputComponent->BindAction(UseAction, ETriggerEvent::Started, this, &AAreYouLostCharacter::Interact);
 	}
 	else
 	{
@@ -106,12 +110,7 @@ void AAreYouLostCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void AAreYouLostCharacter::SetHasRifle(bool bNewHasRifle)
+void AAreYouLostCharacter::Interact()
 {
-	bHasRifle = bNewHasRifle;
-}
-
-bool AAreYouLostCharacter::GetHasRifle()
-{
-	return bHasRifle;
+	InteractionComponent->Interact();
 }
