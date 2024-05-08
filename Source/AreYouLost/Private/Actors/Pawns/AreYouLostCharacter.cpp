@@ -10,6 +10,7 @@
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
 #include "Components/InteractionComponent.h"
+#include "Components/HandPoint.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -39,6 +40,10 @@ AAreYouLostCharacter::AAreYouLostCharacter()
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(FName("Interaction"));
+
+	HandPoint = CreateDefaultSubobject<UHandPoint>(FName("Hand"));
+	HandPoint->SetupAttachment(FirstPersonCameraComponent);
+	HandPoint->SetRelativeLocation(FVector(10.f, 10.f, 0.f));
 }
 
 void AAreYouLostCharacter::BeginPlay()
@@ -112,5 +117,12 @@ void AAreYouLostCharacter::Look(const FInputActionValue& Value)
 
 void AAreYouLostCharacter::Interact()
 {
-	InteractionComponent->Interact();
+	if(HandPoint->CheckHasObject())
+	{
+		HandPoint->DropObject();
+	}
+	else
+	{
+		InteractionComponent->Interact();		
+	}
 }

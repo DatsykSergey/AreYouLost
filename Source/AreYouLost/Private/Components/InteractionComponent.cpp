@@ -13,8 +13,6 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void UInteractionComponent::Interact() const
 {
-	UE_LOG(LogTemp, Warning, TEXT("TEST"))
-	
 	AActor* Owner = GetOwner();
 	check(Owner);
 	FVector StartPosition;
