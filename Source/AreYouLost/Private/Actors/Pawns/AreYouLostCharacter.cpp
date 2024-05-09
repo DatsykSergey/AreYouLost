@@ -11,6 +11,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Components/InteractionComponent.h"
 #include "Components/HandPoint.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -40,10 +41,14 @@ AAreYouLostCharacter::AAreYouLostCharacter()
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(FName("Interaction"));
-
-	HandPoint = CreateDefaultSubobject<UHandPoint>(FName("Hand"));
+	
+	HandPoint = CreateDefaultSubobject<USceneComponent>(FName("Hand"));
 	HandPoint->SetupAttachment(FirstPersonCameraComponent);
 	HandPoint->SetRelativeLocation(FVector(10.f, 10.f, 0.f));
+
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(FName("Physics Handle"));
+
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AAreYouLostCharacter::BeginPlay()
@@ -88,6 +93,15 @@ void AAreYouLostCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	}
 }
 
+void AAreYouLostCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if(IsHoldingObject())
+	{
+		PhysicsHandle->SetTargetLocation(HandPoint->GetComponentLocation());
+	}
+}
+
 
 void AAreYouLostCharacter::Move(const FInputActionValue& Value)
 {
@@ -117,12 +131,22 @@ void AAreYouLostCharacter::Look(const FInputActionValue& Value)
 
 void AAreYouLostCharacter::Interact()
 {
-	if(HandPoint->CheckHasObject())
+	if(IsHoldingObject())
 	{
-		HandPoint->DropObject();
+		PhysicsHandle->ReleaseComponent();
 	}
 	else
 	{
 		InteractionComponent->Interact();		
 	}
+}
+
+void AAreYouLostCharacter::GrabObject(UPrimitiveComponent* Component)
+{
+	PhysicsHandle->GrabComponentAtLocation(Component, FName(""), HandPoint->GetComponentLocation());
+}
+
+bool AAreYouLostCharacter::IsHoldingObject() const
+{
+	return PhysicsHandle->GetGrabbedComponent() != nullptr;
 }

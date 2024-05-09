@@ -56,9 +56,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Interact, meta=(AllowPrivateAccess = "true"))
 	UInteractionComponent* InteractionComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USceneComponent* HandPoint;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UHandPoint* HandPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class UPhysicsHandleComponent* PhysicsHandle;
 	
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -74,12 +77,14 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	bool IsHoldingObject() const;
 
-protected:
 	void Interact();
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+	virtual void Tick(float DeltaSeconds) override;
 
 public:
 	/** Returns Mesh1P subobject **/
@@ -87,5 +92,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UFUNCTION(BlueprintCallable)
+	void GrabObject(UPrimitiveComponent* Component);
 };
 
