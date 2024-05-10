@@ -93,6 +93,6 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 	UFUNCTION(BlueprintCallable)
-	void GrabObject(UPrimitiveComponent* Component);
+	void GrabObject(UPrimitiveComponent* Component, FVector StartPosition);
 };
 

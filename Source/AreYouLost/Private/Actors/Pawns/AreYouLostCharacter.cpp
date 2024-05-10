@@ -141,9 +141,9 @@ void AAreYouLostCharacter::Interact()
 	}
 }
 
-void AAreYouLostCharacter::GrabObject(UPrimitiveComponent* Component)
+void AAreYouLostCharacter::GrabObject(UPrimitiveComponent* Component, FVector StartPosition)
 {
-	PhysicsHandle->GrabComponentAtLocation(Component, FName(""), HandPoint->GetComponentLocation());
+	PhysicsHandle->GrabComponentAtLocation(Component, FName(""), StartPosition);
 }
 
 bool AAreYouLostCharacter::IsHoldingObject() const
