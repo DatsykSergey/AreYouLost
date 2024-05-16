@@ -16,14 +16,29 @@
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
+			"Enabled": false,
 			"TargetAllowList": [
 				"Editor"
 			]
 		},
 		{
 			"Name": "FMODStudio",
-			"Enabled": true
+			"Enabled": false
+		},
+		{
+			"Name": "PhysicalLayout",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/349bf2d4b1a945fa8f31db80fabf8058"
+		},
+		{
+			"Name": "QOL_Extension",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher:\n//ue/marketplace/product/bd58e635364d4b6892811d800ac99c52"
+		},
+		{
+			"Name": "LDAssistant",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/51c5a9a0d5f84beba23aab69bed8d28c"
 		}
 	]
 }
