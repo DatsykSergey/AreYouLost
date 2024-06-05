@@ -14,6 +14,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Distance = 100;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool IsHasInteract = false;
+
 	UInteractionComponent();
 	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
