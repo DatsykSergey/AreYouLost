@@ -10,6 +10,41 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                           FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	AActor* Owner = GetOwner();
+	check(Owner);
+	FVector StartPosition;
+	FRotator LookRotator;
+
+	if(APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		StartPosition = PlayerController->PlayerCameraManager->GetCameraLocation();
+		LookRotator = PlayerController->PlayerCameraManager->GetCameraRotation();
+	}
+	else
+	{
+		Owner->GetActorEyesViewPoint(StartPosition, LookRotator);
+	}
+
+	FVector EndPosition = StartPosition + LookRotator.Vector() * Distance;
+
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(Owner);
+	FCollisionResponseParams CollisionResponseParams;
+	FHitResult HitResult;
+	bool IsHit = GetWorld()->LineTraceSingleByChannel(HitResult, StartPosition, EndPosition,
+													  ECollisionChannel::ECC_Visibility, CollisionQueryParams,
+													  CollisionResponseParams);
+
+	AActor* HitActor = HitResult.GetActor();
+	if (IsHit && HitActor && HitActor->Implements<UInteractableInterface>())
+	{
+		IsHasInteract = true;
+	}
+	else
+	{
+		IsHasInteract = false;
+	}
 }
 
 void UInteractionComponent::Interact() const
